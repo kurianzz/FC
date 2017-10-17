@@ -1,0 +1,10 @@
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \ 
+   "TaskId": "TASK001", \ 
+   "ReplyQ": "reply.queue", \ 
+   "TaskName": "StopTibcoBW", \ 
+   "Package": "PCK_StopTibcoBW", \ 
+   "TargetHost": "testserver", \ 
+   "Data": [ \ 
+     "BW1|Bw2", "BW3|BW4" \ 
+   ] \ 
+ }' 'http://10.87.216.175:9898/cisor/dispatcher/StopTibcoBW'
