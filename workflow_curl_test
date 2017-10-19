@@ -1,0 +1,17 @@
+
+## CREATE REQUEST ###
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \ 
+   "action": "restart", \ 
+   "product": "tibcobw", \ 
+   "targethost": "hdc84", \ 
+   "reqdata": { \ 
+     "data": [ \ 
+       "BW1" \ 
+     ] \ 
+   } \ 
+ }' 'http://10.87.209.46:9899/cisor/workflow/createwf'
+ 
+ ## COMPLETE TASK ###
+ curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \ 
+   "id": "TASK000069" \ 
+ }' 'http://10.87.209.46:9899/workflow/completetask'
