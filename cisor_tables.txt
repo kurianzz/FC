@@ -1,0 +1,42 @@
+CREATE TABLE cisor_dbschema.jobs
+(
+  id text,
+  name text,
+  data text,
+  "wfId" text,
+  creation_time text,
+  last_update_time text,
+  status text
+)
+
+CREATE TABLE cisor_dbschema.packages
+(
+  taskname text NOT NULL,
+  "package" text,
+  CONSTRAINT package_primary_key PRIMARY KEY (taskname)
+)
+
+CREATE TABLE cisor_dbschema.tasks
+(
+  id text NOT NULL,
+  job_id text,
+  name text,
+  status text,
+  user_id text,
+  journal text,
+  next_taskid text,
+  acquired_time text,
+  ready_time text,
+  due_date text,
+  completed_time text,
+  targethost text,
+  CONSTRAINT pkey PRIMARY KEY (id)
+)
+
+CREATE TABLE cisor_dbschema.workflow
+(
+  id text,
+  template text,
+  action text,
+  product text
+)
