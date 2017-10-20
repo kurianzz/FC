@@ -1,0 +1,94 @@
+jdbc:oracle:thin:@oraashkd01-scan.apac.nsroot.net:8888/APTIBD
+user: cisor_dbschema 
+pwd: cisor_dbschema1234
+
+
+
+Scan Name                                         :               oraashkd01-scan.apac.nsroot.net 
+Scan Port                                             :               8888 
+Service Name                                    :               APTIBD 
+Oracle UserName                            :               admin_oraas 
+Oracle Password                              :               8Mwf7OUr 
+Database Config Type                     :               Standalone
++DATA_APTIBD
+
+--select * from v$asm_diskgroup;
+--select * from dba_data_files
+--select * from dba_temp_files
++DATA_APTIBD/aptibd/datafile/system.264.950495159
+
+1. Create TableSpace
+CREATE TEMPORARY TABLESPACE cisor_tablespace_temp TEMPFILE '+DATA_APTIBD' size 100M AUTOEXTEND ON;
+CREATE TABLESPACE cisor_tablespace DATAFILE '+DATA_APTIBD' size 512M AUTOEXTEND ON;
+
+2. Create user/schema and grant options
+CREATE USER cisor_dbschema IDENTIFIED BY "cisor_dbschema1234" DEFAULT TABLESPACE cisor_tablespace TEMPORARY TABLESPACE cisor_tablespace_temp
+GRANT CONNECT, RESOURCE TO cisor_dbschema;
+GRANT create session TO cisor_dbschema;
+GRANT create table TO cisor_dbschema;
+GRANT create view TO cisor_dbschema;
+GRANT create any trigger TO cisor_dbschema;
+GRANT create any procedure TO cisor_dbschema;
+GRANT create sequence TO cisor_dbschema;
+GRANT create synonym TO cisor_dbschema;
+
+3. Create sequences
+CREATE SEQUENCE seq_jobid MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  CACHE 20;
+  
+  CREATE SEQUENCE seq_reqno MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  CACHE 20;
+  
+  CREATE SEQUENCE seq_taskid MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  CACHE 20;
+
+  4. Create tables
+  
+  CREATE TABLE cisor_dbschema.jobs
+(
+  id varchar2(15),
+  name varchar2(15),
+  data varchar2(15),
+  "wfId" varchar2(15),
+  creation_time varchar2(20),
+  last_update_time varchar2(20),
+  status varchar2(15)
+);
+
+CREATE TABLE cisor_dbschema.packages
+(
+  taskname varchar2(15) NOT NULL,
+  "package" varchar2(99),
+  CONSTRAINT package_primary_key PRIMARY KEY (taskname)
+);
+
+CREATE TABLE cisor_dbschema.tasks
+(
+  id varchar2(15) NOT NULL,
+  job_id varchar2(15),
+  name varchar2(15),
+  status varchar2(15),
+  user_id varchar2(15),
+  journal long,
+  next_taskid varchar2(15),
+  acquired_time varchar2(20),
+  ready_time varchar2(20),
+  due_date varchar2(20),
+  completed_time varchar2(20),
+  targethost varchar2(15),
+  CONSTRAINT pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE cisor_dbschema.workflow
+(
+  id varchar2(15),
+  template long,
+  action varchar2(15),
+  product varchar2(15)
+);
